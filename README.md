@@ -38,6 +38,23 @@ WHY USE HANGFIRE?
   
   
   -------------------
-MAndatory Steps:
+ Steps for setting up development environment :
 1)Make sure hangfire is installed for your application
  NuGet Package Manager> browse> Hangfire
+2) Solution Explorer > Create new SQL Server database > Server name: Copy-paste from your SQL Server Management Studio >New Database name: (name of your choice).
+3) Update the connection string value in Startup.cs with: Right click on newly added connection in solution explorer > properties > Connection string value.
+4) Create a Controllers folder> Add a HangfireController with a basic Get() method in it 
+ >
+   > [ApiController]
+   > [Route("api/[controller]")]
+   > public class HangfireController : ControllerBase
+   > {
+    >    [HttpGet]
+     >   public IActionResult Get()
+      >  {
+       >     return Ok($"Hello from hangfire web api project demo");
+        >}
+       >
+    >}
+   
+ 
