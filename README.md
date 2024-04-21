@@ -62,3 +62,11 @@ WHY USE HANGFIRE?
         }
        
     }
+
+ 5) Properties > launchSettings.json > add this field>  "launchUrl": "hangfire" in 2 places
+    
+     a) Under "profiles" and your project name
+     b) Under "IIS Express"
+
+    And in the same file change the port for the application URL
+     >"applicationUrl": "https://localhost:5001;http://localhost:5000",
