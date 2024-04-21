@@ -128,6 +128,69 @@ WHY USE HANGFIRE?
    ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/0a01cac0-057f-464e-80aa-a2450207d92b)
 
 
+   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2.  *DELAYED JOBS*
+
+      "Its a fire & forget job but we get to define when the job is processed."
+
+   Instead of enqueue(), here we use Schedule() method which will take the timestamp as the second parameter.
+
+   >var jobId = BackgroundJob.Schedule(() => SendWelcomeEmail("Welcome to our app"), TimeSpan.FromSeconds(30));
+   >which says, process this job 30 secs after i have created.
+
+    Code snippet:
+   >
+    
+       [HttpPost]
+        [Route("[action]")]
+        public IActionResult Discount()
+        {
+            int timeInSeconds = 30;
+            var jobId = BackgroundJob.Schedule(() => SendWelcomeEmail("Welcome to our app"), TimeSpan.FromSeconds(timeInSeconds));
+
+            return Ok($"Job ID: {jobId}. Discount email will be sent in {timeInSeconds} seconds!");
+        }
+
+     Now we use POSTMAN to send a POST Request
+
+     Make a POST request call, paste the url followed by Action method that you want to call
+     https://localhost:5001/api/hangfire/discount
+
+     ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/4ccf7c40-6779-46c4-af3e-c7855f5f9f88)
+
+
+     > Open the Hangfire dashbaord, now you can see you discount job in the Scheduled Tab Under jobs
+     
+     > This discount job will be moved to Succeeded Tab Under jobs after 30 secs as per its implementation.
+     
+     ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/a430388c-a027-46d8-b406-17bbb7cf0286)
+
+     ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/14ee0f01-57d2-45ab-b947-bf47b2688b6c)
+
+
+
+     
+   
+
+
+   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ 3.  *RECURRING JOBS*
+
+     "These are the jobs that need to be processed in a recurring way based on the timestamp that we get to define"
+
+    eg: You have a web app where users signed up for your news letters and you send them news letter every first day of the month"
+
+    Use case includes, checking if you have new data in your database every 5 minutes or when you want to send a report to all users each end of the month.
+
+   So any task that happens recursively on a certain timestamp can be processed using a recurring job.
+
+   Here i'm gonna create a job called 'Report'
+
+   I will name the below api endpoint as DatabaseUpdate because i want to check if i have new data in my database.
+   1:30
+
 
    
    
