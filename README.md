@@ -74,3 +74,60 @@ WHY USE HANGFIRE?
      Save all changes and run the application
     ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/a8cbc01b-d6b4-4d22-9586-c6bf7dd4bdd8)
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. *FIRE & FORGET JOBS*
+
+   When you use enqueue() method to create a fire & forget job, you can also get the job id
+
+   > BackgroundJob.Enqueue(() => SendWelcomeEmail("Welcome to our app"));
+   this line can be modified as below
+   
+   > var jobId = BackgroundJob.Enqueue(() => SendWelcomeEmail("Welcome to our app"));
+
+   Code snippet:
+   >
+    
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult Welcome()
+        {
+            var jobId = BackgroundJob.Enqueue(() => SendWelcomeEmail("Welcome to our app"));
+
+            return Ok($"Job ID: {jobId}. Welcome email sent to the user!");
+        }
+        public void SendWelcomeEmail(string text)
+        {
+            Console.WriteLine(text);
+        }
+
+
+   Now we use POSTMAN to send a POST Request
+
+   MANDATORY STEP : Your VS application should be running and you should be able to see hangfire dashboard
+   
+   STEP 2: Open POSTMAN > Copy the url from Hangfire dashboard i.e, https://localhost:5001/hangfire
+   
+   STEP 3: Make a POST request call, paste the url followed by Action method that you want to call
+   https://localhost:5001/hangfire/Welcome
+
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/46f7ff08-be74-4cf6-a1dd-7a06e5f1424c)
+
+   This will give 404 not found, because you have missed to append '/api' since the route of the controller is   [Route("api/[controller]")]  [Route("[action]")]
+
+   Corrected Post Url as below
+
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/c10a020e-52cd-42db-a781-46e01f0489b2)
+
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/507cb0d1-ba80-4967-9ef1-873a44df08e7)
+
+   click on jobId to see more details
+
+   You can also have the dashboard and PostMan side-by-side to see the real time processing
+
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/0a01cac0-057f-464e-80aa-a2450207d92b)
+
+
+
+   
+   
