@@ -230,6 +230,7 @@ WHY USE HANGFIRE?
    JobId 7 is the 1st triggered recurring job.
    If you check after couple minutes it will have Jobs with ID 8,9,10 executed for every minute since Cron job is scheduled minutely.
 
+   (before proceeding to next job make sure, you delete the recurring job)
 
    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -270,17 +271,23 @@ Now we use POSTMAN to send a POST Request
 
  Make a POST request call, paste the url followed by Action method that you want to call
  https://localhost:5001/api/hangfire/confirm
-
+ 
+![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/5f306889-56ff-48ca-833a-7a8cf9e4c730)
 
   Open the Hangfire dashbaord, now you can see the parentjob in Scheduled Job and 1 Awaiting job which is the second confirmation job
 
+![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/101cb8bd-0e86-4bd5-9901-7e01c68731ae)
 
 
   If you click on the jobId of Awaiting job, you can see on which parent job is this awaiting
+![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/564f5c1a-03ba-418a-bf98-3925b73c99d2)
 
 
   And if you click on the Parent JobId, you can see that this job is scheduled.
 
+![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/0875a64f-fce5-4c82-a620-707f3d9beca5)
 
   Finally, you can check the Succeeded job tabs to check if both job have been executed successfully.
-        
+
+![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/db367342-2a19-4e7b-8dbb-d42f32daad72)
+    
