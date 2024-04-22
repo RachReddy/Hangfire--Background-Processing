@@ -139,7 +139,7 @@ WHY USE HANGFIRE?
    >var jobId = BackgroundJob.Schedule(() => SendWelcomeEmail("Welcome to our app"), TimeSpan.FromSeconds(30));
    >which says, process this job 30 secs after i have created.
 
-    Code snippet:
+   Code snippet:
    >
     
        [HttpPost]
@@ -152,26 +152,22 @@ WHY USE HANGFIRE?
             return Ok($"Job ID: {jobId}. Discount email will be sent in {timeInSeconds} seconds!");
         }
 
-     Now we use POSTMAN to send a POST Request
 
-     Make a POST request call, paste the url followed by Action method that you want to call
-     https://localhost:5001/api/hangfire/discount
+   Now we use POSTMAN to send a POST Request
 
-     ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/4ccf7c40-6779-46c4-af3e-c7855f5f9f88)
+   Make a POST request call, paste the url followed by Action method that you want to call
+   https://localhost:5001/api/hangfire/discount
+
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/4ccf7c40-6779-46c4-af3e-c7855f5f9f88)
 
 
-     > Open the Hangfire dashbaord, now you can see you discount job in the Scheduled Tab Under jobs
+   Open the Hangfire dashbaord, now you can see you discount job in the Scheduled Tab Under jobs
      
-     > This discount job will be moved to Succeeded Tab Under jobs after 30 secs as per its implementation.
+   This discount job will be moved to Succeeded Tab Under jobs after 30 secs as per its implementation.
      
-     ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/a430388c-a027-46d8-b406-17bbb7cf0286)
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/a430388c-a027-46d8-b406-17bbb7cf0286)
 
-     ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/14ee0f01-57d2-45ab-b947-bf47b2688b6c)
-
-
-
-     
-   
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/14ee0f01-57d2-45ab-b947-bf47b2688b6c)
 
 
    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -188,9 +184,53 @@ WHY USE HANGFIRE?
 
    Here i'm gonna create a job called 'Report'
 
-   I will name the below api endpoint as DatabaseUpdate because i want to check if i have new data in my database.
-   1:30
+   I will name the my api endpoint as DatabaseUpdate because i want to check if i have new data in my database.
+
+   >  RecurringJob.AddOrUpdate(() => Console.WriteLine("Database updated"), Cron.Minutely);
+   I want to check this change every minute, hence passing it as second parameter.
+
+   Code snippet:
+   >
+    
+        [HttpPost]
+        [Route("[action]")]
+        public IActionResult DatabaseUpdate()
+        {
+            RecurringJob.AddOrUpdate(() => Console.WriteLine("Database updated"), Cron.Minutely);
+            return Ok("Database check job initiated!");
+        }
 
 
-   
-   
+
+   Before execution
+     ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/a7471819-bf45-4ce3-90a6-48f4b9688e1d)
+
+
+   Now we use POSTMAN to send a POST Request
+
+   Make a POST request call, paste the url followed by Action method that you want to call
+   https://localhost:5001/api/hangfire/databaseupdate
+
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/0fec4425-978d-4c4b-81cc-8c169540a63d)
+
+
+   Open the Hangfire dashbaord, now you can see the DatabaseUpdate job in the Recuuring Jobs Tab in the top panel.
+
+   It will give details on when the job was created, last execution, next execution.
+  
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/b65811c5-5f5d-4e72-92f5-2b076ce26d7c)
+
+
+   Once the job is execxuted (i.e, after a minute as per its implementation) , it will also be reflected in the succeeded tab.
+       
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/f3d982d7-f611-46f1-ae65-71b4c0863257)
+
+   ![image](https://github.com/RachReddy/Hangfire--Background-Processing/assets/94166047/00373d9c-94ba-4617-95cc-b94247f7a276)
+
+   JobId 7 is the 1st triggered recurring job.
+   If you check after couple minutes it will have Jobs with ID 8,9,10 executed for every minute since Cron job is scheduled minutely.
+
+
+   ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4.  *CONTINUOUS JOBS*
