@@ -234,3 +234,53 @@ WHY USE HANGFIRE?
    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 4.  *CONTINUOUS JOBS*
+
+    "This Job is meant to be used when you have chain reaction of events"
+
+    eg, User decides to unsubscribe from your app, once the user does that you want to send them confirmation email.
+    Therefore, the second job here i.e, 'Sending a confirmation email' waits for the 1st job to be called that is 'Unsubscription'.
+    Here 'Unsubscribe' is the action that happens.
+
+     > BackgroundJob.ContinueJobWith(parentJobId, () => Console.WriteLine("You were unsubscribed!"));    // this is 2nd job, i.e, sending confirmation
+
+     the job will be executed only if we have a parent job i.e, unsubscribe in this case
+
+      Code snippet:
+   >
+    
+       [HttpPost]
+        [Route("[action]")]
+        public IActionResult Confirm()
+        {
+            int timeInSeconds = 30;
+            var parentJobId = BackgroundJob.Schedule(() => Console.WriteLine("You asked to be unsubscribed!"), TimeSpan.FromSeconds(timeInSeconds));
+
+            BackgroundJob.ContinueJobWith(parentJobId, () => Console.WriteLine("You were unsubscribed!"));
+
+            return Ok("Confirmation job created!");
+        }
+
+Once the below job is executed,
+var parentJobId = BackgroundJob.Schedule(() => Console.WriteLine("You asked to be unsubscribed!"), TimeSpan.FromSeconds(timeInSeconds));
+
+the second job is executed in 30 seconds because we've defined int timeInSeconds = 30;
+
+
+Now we use POSTMAN to send a POST Request
+
+ Make a POST request call, paste the url followed by Action method that you want to call
+ https://localhost:5001/api/hangfire/confirm
+
+
+  Open the Hangfire dashbaord, now you can see the parentjob in Scheduled Job and 1 Awaiting job which is the second confirmation job
+
+
+
+  If you click on the jobId of Awaiting job, you can see on which parent job is this awaiting
+
+
+  And if you click on the Parent JobId, you can see that this job is scheduled.
+
+
+  Finally, you can check the Succeeded job tabs to check if both job have been executed successfully.
+        
