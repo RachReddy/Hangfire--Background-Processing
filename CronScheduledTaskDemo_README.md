@@ -10,7 +10,7 @@ Cron jobs are essential for automating repetitive tasks, such as backups, report
 ## 🛠️ Project Description
 This is a lightweight C# console application that emulates the behavior of a cron job. It repeatedly executes a task at a specified interval over a defined duration.
 
-In simple terms, this app opens your specified text file and writes the message and current time into it every few minutes, repeating it for a set number of times.
+In simple terms, this app opens your specified text file and writes the message and current time into it every few minutes asynchronously, repeating it for a set number of times.
 
 ### Features:
 - Configurable time interval and duration.
