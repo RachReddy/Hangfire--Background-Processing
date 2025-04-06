@@ -81,6 +81,12 @@ Here are several practical examples where cron jobs or scheduled tasks are commo
 
 ---
 
-## 💬 Feedback
-Feel free to open an issue or submit a PR if you'd like to contribute or suggest improvements!
+## 💬 Common doubts
+1. Why use async? Can’t we just do this sequentially?
+   - Yes, we can write this code sequentially using synchronous methods like File.AppendAllText and Thread.Sleep, but using async/await has several advantages
+
+   - a) Non-blocking I/O: File.AppendAllTextAsync doesn’t block the thread while writing to the file, making it more efficient—especially useful if you scale this or integrate it into a larger system.
+   - b) Better performance: Task.Delay (async-friendly) is preferred over Thread.Sleep, as it doesn’t tie up a thread while waiting.
+   
+
 
